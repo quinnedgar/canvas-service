@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import pickle
+import openAI
 import time
 
 from selenium import webdriver
@@ -16,28 +16,25 @@ chrome_driver = '/Users/quinnedgar/chromedriver-mac-arm64/chromedriver'
 url = 'https://canvas.oregonstate.edu/courses/1999561/quizzes/3035252/take'
 
 options = Options()
+options.add_argument(f"user-data-dir=/Users/quinnedgar/selenium-profile") 
+
 service = Service(executable_path=chrome_driver)
-driver = webdriver.Chrome(service=service, options=options)
 
 
 if not usr:
-    driver.get("https://canvas.oregonstate.edu/login/ldap")
+    driver = webdriver.Chrome(service=service, options=options)
+    driver.get("https://canvas.oregonstate.edu/")
+    input("Press Enter AFTER you are fully logged in...")
 
-    WebDriverWait(driver, 1000).until(
-        EC.url_contains("canvas.oregonstate.edu")
-    )
-
-    cookies = driver.get_cookies()
-    with open("/Users/quinnedgar/cookies.pkl", "wb") as file:
-        pickle.dump(cookies, file)
+    driver.quit()
+    exit()
 
 else:
-    driver.get("https://canvas.oregonstate.edu")
+    options.add_argument('--headless')
+    driver = webdriver.Chrome(service=service, options=options)
 
-    with open("/Users/quinnedgar/cookies.pkl", "rb") as file:
-        cookies = pickle.load(file)
-    for c in cookies:
-        driver.add_cookie(c)
+    driver.get(url)
+    time.sleep(2)
 
 
 
@@ -47,14 +44,10 @@ try:
     )
 
     for i in search_boxes:
-        print(i.text)
-
+        print(i.text + '\n')
 
 finally:
     time.sleep(10)
     driver.quit()
 
-'''
-fl = open('/Users/quinnedgar/canvas.txt', 'w')
-fl.write(driver.page_source)
-'''
+
