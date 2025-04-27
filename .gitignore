@@ -1,3 +1,5 @@
 config.py
-selenium-session/
+selenium-sessions/
 pycache/
+__pycache__/
+*.pyc

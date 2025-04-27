@@ -21,7 +21,7 @@ chrome_driver = '/Users/quinnedgar/chromedriver-mac-arm64/chromedriver'
 url = 'https://canvas.oregonstate.edu/courses/1999561/quizzes/3035252/take'
 
 options = Options()
-options.add_argument(f"user-data-dir=selenium-profile") #tempfile.mkdtemp()
+options.add_argument(f"user-data-dir=selenium-sessions/selenium-profile") #tempfile.mkdtemp()
 options.add_argument('--headless')
 
 service = Service(executable_path=chrome_driver)
