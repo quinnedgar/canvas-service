@@ -1,0 +1,60 @@
+[
+    {
+        "question": "You are responsible for making sure you receive and read all communications from the instructor.",
+        "answer_choices": [
+            "True",
+            "False"
+        ]
+    },
+    {
+        "question": "If you accidentally submit the wrong version, but don't realize it until after the deadline, you can just send the instructor the version you meant to submit.",
+        "answer_choices": [
+            "True",
+            "False"
+        ]
+    },
+    {
+        "question": "If you disagree with a score on any coursework, you have two weeks to contact your TA about it.",
+        "answer_choices": [
+            "True",
+            "False"
+        ]
+    },
+    {
+        "question": "The three quizzes are worth what portion of your total grade?",
+        "answer_choices": [
+            "30%",
+            "10%",
+            "20%",
+            "70%"
+        ]
+    },
+    {
+        "question": "You need to let your TA or the instructor or a tutor know when you have questions, so that we can help you.",
+        "answer_choices": [
+            "True",
+            "False"
+        ]
+    },
+    {
+        "question": "You may not discuss any part of the assignments with anyone else.",
+        "answer_choices": [
+            "True",
+            "False"
+        ]
+    },
+    {
+        "question": "You must do your own work.",
+        "answer_choices": [
+            "True",
+            "False"
+        ]
+    },
+    {
+        "question": "The instructor wants you to do well in this course and looks forward to working with you.",
+        "answer_choices": [
+            "True",
+            "False"
+        ]
+    }
+]

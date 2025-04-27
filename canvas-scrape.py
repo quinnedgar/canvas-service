@@ -14,14 +14,14 @@ from selenium.webdriver.common.action_chains import ActionChains
 import selenium.common.exceptions as se
 
 
-from jsonify import Question
+from question import Question
 
 usr = 0
 chrome_driver = '/Users/quinnedgar/chromedriver-mac-arm64/chromedriver'
 url = 'https://canvas.oregonstate.edu/courses/1999561/quizzes/3035252/take'
 
 options = Options()
-options.add_argument(f"user-data-dir=selenium-sessions/selenium-profile") #tempfile.mkdtemp()
+options.add_argument(f"user-data-dir=selenium-sessions/chrome-profile") #tempfile.mkdtemp()
 options.add_argument('--headless')
 
 service = Service(executable_path=chrome_driver)
