@@ -1,6 +1,4 @@
 config.py
-selenium-sessions/
-selenium-session-0
 user-sessions/
 pycache/
 __pycache__/
