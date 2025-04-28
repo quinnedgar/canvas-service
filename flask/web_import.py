@@ -5,6 +5,7 @@ import time
 import redis
 import os
 import signal
+import threading
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 
@@ -20,20 +21,24 @@ def handle_import():
         global Url
         Url = request.get_json().get('url')
         r.publish('URL Comm', Url)
-        print(f'Recieved and Published: {Url}')
         time.sleep(1)
         return jsonify({"status": "success", "recieved": Url})
     
 @app.route('/shutdown', methods=['POST'])
 def shutdown():
-    print("Shutdown")
-    time.sleep(1)
-    os.kill(os.getpid(), signal.SIGINT)
+    def shutdown_app():
+        time.sleep(1)
+        os.kill(os.getpid(), signal.SIGINT)
+
+
+    threading.Thread(target=shutdown_app, daemon=True).start()
+    
     return 'Server shutting down...', 200
 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
 
 
 

@@ -27,14 +27,15 @@ def redis_sub():
 
     try:
         for m in ps.listen():
+            global break_flag
+            break_flag = False
             if m['type'] == 'message':
                 global Url
                 Url = m['data'].decode('utf-8')
-                print(f'Redis Reciever: {Url}')
-                global break_flag
+                print(f'Redis: {Url}')
                 break_flag = True
                 try: requests.post('http://localhost:5000/shutdown')
-                except ChunkedEncodingError as e: 
+                except ChunkedEncodingError as e:
                     print(f'Exception: {e}')
                     time.sleep(1)
                 break
@@ -135,4 +136,6 @@ try:
 
 finally:
     print('JSON Written')
+    time.sleep(2)
+    open('scraped.json', 'w')
     dr.quit()

@@ -3,3 +3,4 @@ user-sessions/
 pycache/
 __pycache__/
 *.pyc
+thread_tracer.py
