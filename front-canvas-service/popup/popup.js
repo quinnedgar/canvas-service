@@ -1,1 +1,1 @@
-console.log('My popup!!')
+console.log('canvas-service-chrome-ext')

@@ -5,7 +5,8 @@ function exportUrl(url){
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({url: url})
+        body: JSON.stringify({url: url}),
+        credentials: 'include',
     })
 
     .then(response => response.json())
