@@ -1,8 +1,10 @@
 import requests
+from requests.exceptions import ChunkedEncodingError
 import time
 from bs4 import BeautifulSoup
 import tempfile
 import os
+import redis
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -15,18 +17,46 @@ import selenium.common.exceptions as se
 
 from question import Question
 
-usr = 0
+def create_driver():
+    return webdriver.Chrome(service=service, options=options)
+
+def redis_sub():
+    ps = r.pubsub()
+    ps.subscribe('URL Comm')
+    print("Waiting for web response...")
+
+    try:
+        for m in ps.listen():
+            if m['type'] == 'message':
+                global Url
+                Url = m['data'].decode('utf-8')
+                print(f'Redis Reciever: {Url}')
+                global break_flag
+                break_flag = True
+                try: requests.post('http://localhost:5000/shutdown')
+                except ChunkedEncodingError as e: 
+                    print(f'Exception: {e}')
+                    time.sleep(1)
+                break
+            if break_flag:
+                break
+    finally:
+        ps.unsubscribe()
+        ps.close()
+
+
 chrome_driver = '/Users/quinnedgar/chromedriver-mac-arm64/chromedriver'
-url = 'https://canvas.oregonstate.edu/courses/1999561/quizzes/3035252/take'
+
+r = redis.Redis(host='localhost', port=6379, db=0)
+redis_sub()
+url = Url
+#url = 'https://canvas.oregonstate.edu/courses/1999561/quizzes/3035252/take'
 
 options = Options()
 options.add_argument(f"user-data-dir=user-sessions/user-0") #tempfile.mkdtemp()
 options.add_argument('--headless')
 
 service = Service(executable_path=chrome_driver)
-
-def create_driver():
-    return webdriver.Chrome(service=service, options=options)
     
 driver = None
 
