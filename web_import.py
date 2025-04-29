@@ -7,6 +7,8 @@ import os
 import signal
 import threading
 
+#Git is being annoying
+
 r = redis.Redis(host='localhost', port=6379, db=0)
 
 app = Flask(__name__)
