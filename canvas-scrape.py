@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import tempfile
 import os
 import redis
+import shutil
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -17,8 +18,20 @@ import selenium.common.exceptions as se
 
 from question import Question
 
+def remove_ghosts():
+    for folder in ["selenium-sessions", "selenium-session-0"]:
+        if os.path.exists(folder):
+            try:
+                shutil.rmtree(folder)
+                print(f"Removed {folder}")
+            except Exception as e:
+                print(f"Error removing {folder}: {e}")
+
+
 def create_driver():
-    return webdriver.Chrome(service=service, options=options)
+    dr = webdriver.Chrome(service=service, options=options)
+    remove_ghosts()
+    return dr
 
 def redis_sub():
     ps = r.pubsub()
@@ -51,10 +64,10 @@ chrome_driver = '/Users/quinnedgar/chromedriver-mac-arm64/chromedriver'
 r = redis.Redis(host='localhost', port=6379, db=0)
 redis_sub()
 url = Url
-#url = 'https://canvas.oregonstate.edu/courses/1999561/quizzes/3035252/take'
+#https://canvas.oregonstate.edu/courses/1999561/quizzes/3035252/take
 
 options = Options()
-options.add_argument(f"user-data-dir=user-sessions/user-0") #tempfile.mkdtemp()
+options.add_argument(f"user-data-dir=user-sessions/user-0") 
 options.add_argument('--headless')
 
 service = Service(executable_path=chrome_driver)
@@ -119,8 +132,6 @@ except se.TimeoutException:
 
 finally:
     if driver: driver.quit()
-
-
 
 try:
     dr = create_driver()
