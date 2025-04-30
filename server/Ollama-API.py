@@ -5,7 +5,6 @@ import socket
 import subprocess
 import time
 import os, signal, threading
-from flask_httpauth import HTTPTokenAuth
 
 ######## NOTE: Windows: Install ollama on PATH or subprocess will fail
 ### Windows winget search ollama, winget install Ollama.Ollama
@@ -36,6 +35,7 @@ def recieve():
     body = request.json
     question = body['question']
     choices = body['choices']
+    
 
     question_obj = {
         "question": question,
@@ -57,16 +57,19 @@ def recieve():
         print(f"\n Exception: {e}\n")
 
     if response.status_code != 200: 
-        print('Ollama API Query Fail')
         return jsonify({"error": "Ollama API Query Fail"}), 500
 
     model_result = response.json().get('response', '').strip()
+  
+    for c in choices:
+        if c in model_result:
+            return c
+        else:
+            return jsonify({
+            "response": model_result
+            })
 
-    return jsonify({
-        "question": question,
-        "answer": model_result
-    })
-
+    
 @app.route('/shutdown', methods=['POST'])
 def shutdown():
     def shutdown_app():
